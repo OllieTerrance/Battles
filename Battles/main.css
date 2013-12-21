@@ -1,0 +1,35 @@
+.panel-heading {
+    text-align: center;
+}
+.alert {
+    margin-bottom: 10px;
+}
+.alert .btn {
+    margin-right: 5px;
+}
+.progress {
+    position: relative;
+    height: 34px;
+    margin-bottom: 0;
+    background-color: rgb(160, 160, 160);
+    background-image: none;
+}
+.progress span {
+    position: absolute;
+    display: block;
+    padding: 6px 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.progress-greyed span {
+    color: rgb(224, 224, 224);
+}
+.progress + .progress {
+    margin-top: 5px;
+}
+#battleEnemies img {
+    position: relative;
+    display: inline-block;
+    margin-top: 25px;
+}

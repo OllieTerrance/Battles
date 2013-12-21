@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Battles</title>
+        <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="bootstrap-theme.min.css"/>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+         <div class="navbar navbar-default navbar-static-top">
+            <div class="navbar-header">
+                <span class="navbar-brand">Battles</span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Player</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="playerHP" class="progress">
+                                <div class="prog-on progress-bar progress-bar-success"></div>
+                                <div class="prog-off progress-bar progress-bar-danger"></div>
+                                <span></span>
+                            </div>
+                            <div id="playerBP" class="progress">
+                                <div class="prog-on progress-bar progress-bar-warning"></div>
+                                <div class="prog-off progress-bar progress-bar-danger"></div>
+                                <span></span>
+                            </div>
+                            <div id="playerSP" class="progress">
+                                <div class="prog-on progress-bar progress-bar-info"></div>
+                                <div class="prog-off progress-bar progress-bar-danger"></div>
+                                <span></span>
+                            </div>
+                            <div id="playerLevel" class="progress">
+                                <div class="prog-on progress-bar progress-bar-default"></div>
+                                <div class="prog-off progress-bar progress-bar-danger"></div>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="playerTurnPanel" class="panel panel-primary" style="display: none;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Your turn!</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="playerTurnMainMenu" class="row">
+                                <div class="col-sm-6">
+                                    <button id="playerTurnJump" class="btn btn-block btn-info">Jump</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button id="playerTurnHammer" class="btn btn-block btn-warning">Hammer</button>
+                                </div>
+                            </div>
+                            <div id="playerTurnJumpMenu" style="display: none;">
+                                <div class="alert alert-info">
+                                    <button id="playerTurnJumpBack" class="btn btn-xs btn-info">
+                                        <span class="glyphicon glyphicon-arrow-left"></span>
+                                    </button>
+                                    <span>Jump on which enemy?</span>
+                                </div>
+                                <span><strong>Jump attack:</strong> click just before landing on the enemy!</span>
+                            </div>
+                            <div id="playerTurnHammerMenu" style="display: none;">
+                                <div class="alert alert-warning">
+                                    <button id="playerTurnHammerBack" class="btn btn-xs btn-warning">
+                                        <span class="glyphicon glyphicon-arrow-left"></span>
+                                    </button>
+                                    <span>Hammer which enemy?</span>
+                                </div>
+                                <span><strong>Hammer attack:</strong> click and hold to lean back, then release to swing!</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="battlePanel" class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Battle</h3>
+                        </div>
+                        <div id="battleStage" class="panel-body">
+                            <img id="battlePlayer" class="img-rounded pull-left" src="player.png"/>
+                            <div id="battleEnemies" class="pull-right"></div>
+                        </div>
+                    </div>
+                    <div id="gameOverPanel" class="panel panel-primary" style="display: none;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Game over!</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="alert alert-info">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Enemies</h3>
+                        </div>
+                        <div id="enemyList" class="panel-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="bootstrap.min.js"></script>
+        <script type="text/javascript" src="classes.js"></script>
+        <script type="text/javascript" src="enemies.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>
