@@ -75,12 +75,14 @@ function Player(props) {
     this.playTurn = function playTurn() {
         throw new signals.WaitForPlayer;
     };
-    this.jumpAttack = function jumpAttack(target) {
+    this.jumpAttack = function jumpAttack(target, hit) {
         target.reduceHealth(this.jumpStrength);
-        target.reduceHealth(this.jumpStrength);
+        if (hit) {
+            target.reduceHealth(this.jumpStrength);
+        }
     };
-    this.hammerAttack = function hammerAttack(target) {
-        target.reduceHealth(this.hammerStrength);
+    this.hammerAttack = function hammerAttack(target, hit) {
+        target.reduceHealth(hit ? this.hammerStrength : Math.ceil(this.hammerStrength / 2));
     };
     this.reduceHealth = function reduceHealth(damage) {
         var adjDamage = damage - this.defense;

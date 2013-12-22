@@ -20,8 +20,8 @@ $(document).ready(function documentReady(e) {
             // add health bar
             var enemy = stage.enemies[i];
             var progress = $("<div/>").addClass("progress").data("enemy", enemy);
-            progress.append($("<div/>").addClass("prog-on progress-bar progress-bar-success").css("width", "100%"));
-            progress.append($("<div/>").addClass("prog-off progress-bar progress-bar-danger").css("width", "0%"));
+            progress.append($("<div/>").addClass("prog-on progress-bar progress-bar-success"));
+            progress.append($("<div/>").addClass("prog-off progress-bar progress-bar-danger"));
             progress.append($("<span/>").html(enemy.name + " (" + enemy.healthPoints + " / " + enemy.maxHealth + ")"));
             $("#enemyList").append(progress);
             // add stage entity
@@ -42,6 +42,7 @@ $(document).ready(function documentReady(e) {
             });
             $("#battleEnemies").append(img);
         }
+        updateAll();
     }
     function updateAll() {
         updateProgress($("#playerHP"), "HP", stage.player.healthPoints, stage.player.maxHealth);
@@ -136,8 +137,57 @@ $(document).ready(function documentReady(e) {
         playTurns();
     }
     function playerHammerAttack(target) {
+        $("#playerHammerPlayer").attr("src", "player_hammer_before.png");
+        $("#playerHammerEnemy").attr("src", target.image).show();
+        $("#playerHammerModal").modal("show");
+        $(document).on("mousedown", function documentMouseDownPlayerHammer(e) {
+            e.stopPropagation();
+            $(document).off("mousedown");
+            var hit = false;
+            $("#playerHammerPlayer").attr("src", "player_hammer_prep.png");
+            var time1 = setTimeout(function playerHammerTime1() {
+                $("#playerHammerTime1").css("background-color", "red");
+            }, 600);
+            var time2 = setTimeout(function playerHammerTime1() {
+                $("#playerHammerTime2").css("background-color", "orange");
+            }, 1200);
+            var time3 = setTimeout(function playerHammerTime1() {
+                $("#playerHammerTime3").css("background-color", "yellow");
+            }, 1800);
+            var time4 = setTimeout(function playerHammerTime1() {
+                hit = true;
+                $("#playerHammerTime4").css("background-color", "green");
+            }, 2400);
+            var timeEnd = setTimeout(function playerHammerTimeEnd() {
+                hit = false;
+                $(document).off("mouseup");
+                $("#playerHammerEnemy").attr("src", "").hide();
+                $("#playerHammerPlayer").attr("src", "player_hammer_" + (hit ? "hit" : "miss") + ".png");
+                setTimeout(function postPlayerHammerAttackTrigger() {
+                    postPlayerHammerAttack(target, hit);
+                }, 600);
+            }, 2800);
+            $(document).on("mouseup", function documentMouseUpPlayerHammer(e) {
+                e.stopPropagation();
+                $(document).off("mouseup");
+                clearTimeout(time1);
+                clearTimeout(time2);
+                clearTimeout(time3);
+                clearTimeout(time4);
+                clearTimeout(timeEnd);
+                $("#playerHammerEnemy").attr("src", "").hide();
+                $("#playerHammerPlayer").attr("src", "player_hammer_" + (hit ? "hit" : "miss") + ".png");
+                setTimeout(function postPlayerHammerAttackTrigger() {
+                    postPlayerHammerAttack(target, hit);
+                }, 600);
+            });
+        });
+    }
+    function postPlayerHammerAttack(target, hit) {
+        $("#playerHammerModal").modal("hide");
+        $("#playerHammerTime1, #playerHammerTime2, #playerHammerTime3, #playerHammerTime4").css("background-color", "");
         try {
-            stage.player.hammerAttack(target);
+            stage.player.hammerAttack(target, hit);
         } catch (e) {
             checkEnemyHealth(e);
         }

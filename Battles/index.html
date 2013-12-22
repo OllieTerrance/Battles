@@ -43,20 +43,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div id="playerTurnPanel" class="panel panel-primary" style="display: none;">
                         <div class="panel-heading">
                             <h3 class="panel-title">Your turn!</h3>
                         </div>
                         <div class="panel-body">
-                            <div id="playerTurnMainMenu" class="row">
-                                <div class="col-sm-6">
-                                    <button id="playerTurnJump" class="btn btn-block btn-info">Jump</button>
-                                </div>
-                                <div class="col-sm-6">
-                                    <button id="playerTurnHammer" class="btn btn-block btn-warning">Hammer</button>
-                                </div>
+                            <div id="playerTurnMainMenu">
+                                <button id="playerTurnJump" class="btn btn-block btn-info">Jump</button>
+                                <button id="playerTurnHammer" class="btn btn-block btn-warning">Hammer</button>
                             </div>
                             <div id="playerTurnJumpMenu" style="display: none;">
                                 <div class="alert alert-info">
@@ -78,6 +72,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div id="battlePanel" class="panel panel-success">
                         <div class="panel-heading">
                             <h3 class="panel-title">Battle</h3>
@@ -104,6 +100,21 @@
                             <h3 class="panel-title">Enemies</h3>
                         </div>
                         <div id="enemyList" class="panel-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="playerHammerModal" class="modal fade" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style="text-align: center;">
+                        <img id="playerHammerPlayer"/>
+                        <img id="playerHammerEnemy" style="width: 75px; height: 75px; margin-bottom: 30px"/>
+                        <br/><br/>
+                        <div id="playerHammerTime1" class="img-thumbnail" style="width: 20px; height: 20px;"></div>
+                        <div id="playerHammerTime2" class="img-thumbnail" style="width: 20px; height: 20px;"></div>
+                        <div id="playerHammerTime3" class="img-thumbnail" style="width: 20px; height: 20px;"></div>
+                        <div id="playerHammerTime4" class="img-thumbnail" style="width: 30px; height: 30px;"></div>
                     </div>
                 </div>
             </div>
