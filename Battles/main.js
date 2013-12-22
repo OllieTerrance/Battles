@@ -9,8 +9,13 @@ var signals = {
 
 var stage = new Stage(new Player());
 
-$(document).ready(function documentReady() {
+$(document).ready(function documentReady(e) {
+    $(window).on("resize", function windowResize(e) {
+        $("#battleStage").height($("#battleStage").width() * 0.75);
+    });
+    $("#battleStage").height($("#battleStage").width() * 0.75);
     function initBattle() {
+        var right = (stage.enemies.length - 1) * 20;
         for (var i in stage.enemies) {
             // add health bar
             var enemy = stage.enemies[i];
@@ -20,7 +25,17 @@ $(document).ready(function documentReady() {
             progress.append($("<span/>").html(enemy.name + " (" + enemy.healthPoints + " / " + enemy.maxHealth + ")"));
             $("#enemyList").append(progress);
             // add stage entity
-            var img = $("<img/>").addClass("img-rounded").attr("src", enemy.image).data("enemy", enemy);
+            var img = $("<div/>").addClass("enemy").data("enemy", enemy);
+            img.css({
+                "background-image": "url(" + enemy.image + ")",
+                "right": right + "%"
+            });
+            right -= 20;
+            if (enemy.flying === 1) {
+                img.addClass("enemy-flying-low");
+            } else if (enemy.flying === 2) {
+                img.addClass("enemy-flying-high");
+            }
             img.tooltip({
                 placement: "bottom",
                 title: enemy.tooltip
@@ -57,7 +72,7 @@ $(document).ready(function documentReady() {
         $("#battlePlayer").fadeTo("fast", 0.5);
         switch (type) {
             case battleControlTypes.jump:
-                $("#battleEnemies img").each(function(index, image) {
+                $("#battleEnemies .enemy").each(function(index, image) {
                     var enemy = $(image).data("enemy");
                     if (enemy.healthPoints) {
                         if (enemy.flying === 0 || enemy.flying === 1 || enemy.flying === 2) {
@@ -74,7 +89,7 @@ $(document).ready(function documentReady() {
                 break;
             case battleControlTypes.hammer:
                 var done = false;
-                $("#battleEnemies img").each(function(index, image) {
+                $("#battleEnemies .enemy").each(function(index, image) {
                     var enemy = $(image).data("enemy");
                     if (enemy.healthPoints) {
                         if (done) {
@@ -98,7 +113,7 @@ $(document).ready(function documentReady() {
     }
     function clearBattleControls() {
         $("#battlePlayer").off("click").css("cursor", "").fadeTo("fast", 1);
-        $("#battleEnemies img").each(function(index, image) {
+        $("#battleEnemies .enemy").each(function(index, image) {
             var enemy = $(image).data("enemy");
             if (enemy.healthPoints) {
                 $(image).off("click").css("cursor", "").fadeTo("fast", 1);
@@ -130,7 +145,7 @@ $(document).ready(function documentReady() {
     }
     function checkEnemyHealth(e) {
         if (e instanceof signals.EnemyNoHealth) {
-            $("#battleEnemies img").each(function(index, image) {
+            $("#battleEnemies .enemy").each(function(index, image) {
                 var enemy = $(image).data("enemy");
                 if (enemy === e.enemy) {
                     $(image).fadeOut("fast");
@@ -184,7 +199,7 @@ $(document).ready(function documentReady() {
             }
         }
     }
-    stage.enemies = [new Goomba, new Goomba, new KoopaTroopa];
+    stage.enemies = [new Goomba, new Paragoomba, new KoopaTroopa];
     initBattle();
     playTurns();
 });

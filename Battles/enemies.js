@@ -17,6 +17,21 @@ function Goomba() {
     }];
 };
 
+function Paragoomba() {
+    Enemy.call(this, {
+        name: "Paragoomba",
+        image: "paragoomba.png",
+        flying: (Math.random() < 0.5 ? 1 : 2),
+        maxHealth: 2
+    });
+    this.actions = [{
+        action: function mainAttack() {
+            stage.enemySelectTarget().reduceHealth(1);
+        },
+        prob: 1
+    }];
+};
+
 function KoopaTroopa() {
     Enemy.call(this, {
         name: "Koopa Troopa",

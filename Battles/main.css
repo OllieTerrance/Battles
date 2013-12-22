@@ -28,8 +28,31 @@
 .progress + .progress {
     margin-top: 5px;
 }
-#battleEnemies img {
+#battleStage {
     position: relative;
-    display: inline-block;
-    margin-top: 25px;
+    background-image: url(stage.jpg);
+    background-size: 100%;
+}
+#battlePlayer {
+    position: absolute;
+    bottom: 32%;
+}
+#battleEnemies {
+    position: absolute;
+    right: 20px;
+    width: 60%;
+    height: 65%;
+}
+#battleEnemies .enemy {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    bottom: 0;
+    right: 10%;
+}
+#battleEnemies .enemy-flying-low {
+    margin-bottom: 5%;
+}
+#battleEnemies .enemy-flying-high {
+    margin-bottom: 40%;
 }
