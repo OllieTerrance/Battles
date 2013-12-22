@@ -129,8 +129,60 @@ $(document).ready(function documentReady(e) {
         });
     }
     function playerJumpAttack(target) {
+        $("#canvasModalCanvas").drawImage({
+            layer: true,
+            name: "player",
+            source: "player.png",
+            x: 179, y: 200,
+            fromCenter: false
+        }).drawImage({
+            layer: true,
+            source: target.image,
+            x: 279, y: 225,
+            fromCenter: false
+        });
+        $("#canvasModal").on("shown.bs.modal", function playerJumpCanvasModalShow(e) {
+            $("#canvasModal").off("shown.bs.modal");
+            var canHit = false;
+            var hit = false;
+            $(document).on("click", function documentClickPlayerJump(e) {
+                e.stopPropagation();
+                if (canHit) {
+                    hit = true;
+                }
+            });
+            $("#canvasModalCanvas")
+                .animateLayer("player", {y: -100}, 400)
+                .animateLayer("player", {x: 274}, 400,
+                    function playerJumpCanvasTime1(e) {
+                        setTimeout(function playerJumpCanvasTime2() {
+                            canHit = true;
+                        }, 300);
+                    })
+                .animateLayer("player", {y: 150}, 600,
+                    function playerJumpCanvasTime3(e) {
+                        canHit = false;
+                        $(document).off("click");
+                        if (hit) {
+                            $("#canvasModalCanvas")
+                                .animateLayer("player", {y: 50}, 300)
+                                .animateLayer("player", {y: 150}, 300)
+                        }
+                        $("#canvasModalCanvas").animateLayer("player", {y: -100}, 400,
+                            function playerJumpCanvasTimeEnd(e) {
+                                postPlayerJumpAttack(target, hit);
+                            });
+                    });
+        }).modal("show");
+    }
+    function postPlayerJumpAttack(target, hit) {
+        $("#canvasModal").modal("hide");
+        $("#canvasModal").on("hidden.bs.modal", function playerJumpCanvasModalHide(e) {
+            $("#canvasModal").off("hidden.bs.modal");
+            $("#canvasModalCanvas").removeLayers().clearCanvas();
+        });
         try {
-            stage.player.jumpAttack(target);
+            stage.player.jumpAttack(target, hit);
         } catch (e) {
             checkEnemyHealth(e);
         }
@@ -140,46 +192,49 @@ $(document).ready(function documentReady(e) {
         $("#playerHammerPlayer").attr("src", "player_hammer_before.png");
         $("#playerHammerEnemy").attr("src", target.image).show();
         $("#playerHammerModal").modal("show");
-        $(document).on("mousedown", function documentMouseDownPlayerHammer(e) {
-            e.stopPropagation();
-            $(document).off("mousedown");
-            var hit = false;
-            $("#playerHammerPlayer").attr("src", "player_hammer_prep.png");
-            var time1 = setTimeout(function playerHammerTime1() {
-                $("#playerHammerTime1").css("background-color", "red");
-            }, 600);
-            var time2 = setTimeout(function playerHammerTime1() {
-                $("#playerHammerTime2").css("background-color", "orange");
-            }, 1200);
-            var time3 = setTimeout(function playerHammerTime1() {
-                $("#playerHammerTime3").css("background-color", "yellow");
-            }, 1800);
-            var time4 = setTimeout(function playerHammerTime1() {
-                hit = true;
-                $("#playerHammerTime4").css("background-color", "green");
-            }, 2400);
-            var timeEnd = setTimeout(function playerHammerTimeEnd() {
-                hit = false;
-                $(document).off("mouseup");
-                $("#playerHammerEnemy").attr("src", "").hide();
-                $("#playerHammerPlayer").attr("src", "player_hammer_" + (hit ? "hit" : "miss") + ".png");
-                setTimeout(function postPlayerHammerAttackTrigger() {
-                    postPlayerHammerAttack(target, hit);
-                }, 600);
-            }, 2800);
-            $(document).on("mouseup", function documentMouseUpPlayerHammer(e) {
+        $("#playerHammerModal").on("shown.bs.modal", function playerHammerCanvasModalShow(e) {
+            $("#playerHammerModal").off("shown.bs.modal");
+            $(document).on("mousedown", function documentMouseDownPlayerHammer(e) {
                 e.stopPropagation();
-                $(document).off("mouseup");
-                clearTimeout(time1);
-                clearTimeout(time2);
-                clearTimeout(time3);
-                clearTimeout(time4);
-                clearTimeout(timeEnd);
-                $("#playerHammerEnemy").attr("src", "").hide();
-                $("#playerHammerPlayer").attr("src", "player_hammer_" + (hit ? "hit" : "miss") + ".png");
-                setTimeout(function postPlayerHammerAttackTrigger() {
-                    postPlayerHammerAttack(target, hit);
+                $(document).off("mousedown");
+                var hit = false;
+                $("#playerHammerPlayer").attr("src", "player_hammer_prep.png");
+                var time1 = setTimeout(function playerHammerTime1() {
+                    $("#playerHammerTime1").css("background-color", "red");
                 }, 600);
+                var time2 = setTimeout(function playerHammerTime1() {
+                    $("#playerHammerTime2").css("background-color", "orange");
+                }, 1200);
+                var time3 = setTimeout(function playerHammerTime1() {
+                    $("#playerHammerTime3").css("background-color", "yellow");
+                }, 1800);
+                var time4 = setTimeout(function playerHammerTime1() {
+                    hit = true;
+                    $("#playerHammerTime4").css("background-color", "green");
+                }, 2400);
+                var timeEnd = setTimeout(function playerHammerTimeEnd() {
+                    hit = false;
+                    $(document).off("mouseup");
+                    $("#playerHammerEnemy").attr("src", "").hide();
+                    $("#playerHammerPlayer").attr("src", "player_hammer_miss.png");
+                    setTimeout(function postPlayerHammerAttackTrigger() {
+                        postPlayerHammerAttack(target, hit);
+                    }, 600);
+                }, 2700);
+                $(document).on("mouseup", function documentMouseUpPlayerHammer(e) {
+                    e.stopPropagation();
+                    $(document).off("mouseup");
+                    clearTimeout(time1);
+                    clearTimeout(time2);
+                    clearTimeout(time3);
+                    clearTimeout(time4);
+                    clearTimeout(timeEnd);
+                    $("#playerHammerEnemy").attr("src", "").hide();
+                    $("#playerHammerPlayer").attr("src", "player_hammer_" + (hit ? "hit" : "miss") + ".png");
+                    setTimeout(function postPlayerHammerAttackTrigger() {
+                        postPlayerHammerAttack(target, hit);
+                    }, 600);
+                });
             });
         });
     }
