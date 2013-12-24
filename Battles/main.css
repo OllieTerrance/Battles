@@ -35,7 +35,8 @@
 }
 #battlePlayer {
     position: absolute;
-    bottom: 32%;
+    left: -20px;
+    bottom: 17%;
 }
 #battleEnemies {
     position: absolute;

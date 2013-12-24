@@ -131,14 +131,14 @@ $(document).ready(function documentReady(e) {
     function playerJumpAttack(target) {
         $("#canvasModalCanvas").drawImage({
             layer: true,
-            name: "player",
-            source: "player.png",
-            x: 179, y: 200,
+            source: target.image,
+            x: 279, y: 225,
             fromCenter: false
         }).drawImage({
             layer: true,
-            source: target.image,
-            x: 279, y: 225,
+            name: "player",
+            source: "player_jump.png",
+            x: 149, y: 200,
             fromCenter: false
         });
         $("#canvasModal").on("shown.bs.modal", function playerJumpCanvasModalShow(e) {
@@ -153,7 +153,7 @@ $(document).ready(function documentReady(e) {
             });
             $("#canvasModalCanvas")
                 .animateLayer("player", {y: -100}, 400)
-                .animateLayer("player", {x: 274}, 400,
+                .animateLayer("player", {x: 239}, 400,
                     function playerJumpCanvasTime1(e) {
                         setTimeout(function playerJumpCanvasTime2() {
                             canHit = true;
@@ -176,11 +176,7 @@ $(document).ready(function documentReady(e) {
         }).modal("show");
     }
     function postPlayerJumpAttack(target, hit) {
-        $("#canvasModal").modal("hide");
-        $("#canvasModal").on("hidden.bs.modal", function playerJumpCanvasModalHide(e) {
-            $("#canvasModal").off("hidden.bs.modal");
-            $("#canvasModalCanvas").removeLayers().clearCanvas();
-        });
+        closeCanvasModal();
         try {
             stage.player.jumpAttack(target, hit);
         } catch (e) {
@@ -189,34 +185,95 @@ $(document).ready(function documentReady(e) {
         playTurns();
     }
     function playerHammerAttack(target) {
-        $("#playerHammerPlayer").attr("src", "player_hammer_before.png");
-        $("#playerHammerEnemy").attr("src", target.image).show();
-        $("#playerHammerModal").modal("show");
-        $("#playerHammerModal").on("shown.bs.modal", function playerHammerCanvasModalShow(e) {
-            $("#playerHammerModal").off("shown.bs.modal");
+        $("#canvasModalCanvas").drawEllipse({
+            layer: true,
+            name: "count1",
+            strokeStyle: "#ddd",
+            strokeWidth: 1,
+            x: 219, y: 75,
+            width: 20, height: 20
+        }).drawEllipse({
+            layer: true,
+            name: "count2",
+            strokeStyle: "#ddd",
+            strokeWidth: 1,
+            x: 249, y: 75,
+            width: 20, height: 20
+        }).drawEllipse({
+            layer: true,
+            name: "count3",
+            strokeStyle: "#ddd",
+            strokeWidth: 1,
+            x: 279, y: 75,
+            width: 20, height: 20
+        }).drawEllipse({
+            layer: true,
+            name: "count4",
+            strokeStyle: "#ddd",
+            strokeWidth: 1,
+            x: 319, y: 75,
+            width: 40, height: 40
+        }).drawImage({
+            layer: true,
+            name: "enemy",
+            source: target.image,
+            x: 279, y: 150,
+            fromCenter: false
+        }).drawImage({
+            layer: true,
+            name: "player",
+            source: "player.png",
+            x: 149, y: 125,
+            fromCenter: false
+        });
+        $("#canvasModal").on("shown.bs.modal", function playerJumpCanvasModalShow(e) {
+            $("#canvasModal").off("shown.bs.modal");
             $(document).on("mousedown", function documentMouseDownPlayerHammer(e) {
                 e.stopPropagation();
                 $(document).off("mousedown");
                 var hit = false;
-                $("#playerHammerPlayer").attr("src", "player_hammer_prep.png");
+                $("#canvasModalCanvas").removeLayer("player").drawImage({
+                    layer: true,
+                    name: "player",
+                    source: "player_hammer_prep.png",
+                    x: 149, y: 125,
+                    fromCenter: false
+                }).drawLayers();
                 var time1 = setTimeout(function playerHammerTime1() {
-                    $("#playerHammerTime1").css("background-color", "red");
+                    $("#canvasModalCanvas").animateLayer("count1", {
+                        fillStyle: "red",
+                        strokeStyle: "red"
+                    }, 100);
                 }, 600);
                 var time2 = setTimeout(function playerHammerTime1() {
-                    $("#playerHammerTime2").css("background-color", "orange");
+                    $("#canvasModalCanvas").animateLayer("count2", {
+                        fillStyle: "orange",
+                        strokeStyle: "orange"
+                    }, 100);
                 }, 1200);
                 var time3 = setTimeout(function playerHammerTime1() {
-                    $("#playerHammerTime3").css("background-color", "yellow");
+                    $("#canvasModalCanvas").animateLayer("count3", {
+                        fillStyle: "yellow",
+                        strokeStyle: "yellow"
+                    }, 100);
                 }, 1800);
                 var time4 = setTimeout(function playerHammerTime1() {
                     hit = true;
-                    $("#playerHammerTime4").css("background-color", "green");
+                    $("#canvasModalCanvas").animateLayer("count4", {
+                        fillStyle: "green",
+                        strokeStyle: "green"
+                    }, 100);
                 }, 2400);
                 var timeEnd = setTimeout(function playerHammerTimeEnd() {
                     hit = false;
                     $(document).off("mouseup");
-                    $("#playerHammerEnemy").attr("src", "").hide();
-                    $("#playerHammerPlayer").attr("src", "player_hammer_miss.png");
+                    $("#canvasModalCanvas").removeLayer("enemy").removeLayer("player").drawImage({
+                        layer: true,
+                        name: "player",
+                        source: "player_hammer_miss.png",
+                        x: 179, y: 125,
+                        fromCenter: false
+                    }).drawLayers();
                     setTimeout(function postPlayerHammerAttackTrigger() {
                         postPlayerHammerAttack(target, hit);
                     }, 600);
@@ -229,24 +286,35 @@ $(document).ready(function documentReady(e) {
                     clearTimeout(time3);
                     clearTimeout(time4);
                     clearTimeout(timeEnd);
-                    $("#playerHammerEnemy").attr("src", "").hide();
-                    $("#playerHammerPlayer").attr("src", "player_hammer_" + (hit ? "hit" : "miss") + ".png");
+                    $("#canvasModalCanvas").removeLayer("enemy").removeLayer("player").drawImage({
+                        layer: true,
+                        name: "player",
+                        source: "player_hammer_" + (hit ? "hit" : "miss") + ".png",
+                        x: 179, y: 125,
+                        fromCenter: false
+                    }).drawLayers();
                     setTimeout(function postPlayerHammerAttackTrigger() {
                         postPlayerHammerAttack(target, hit);
                     }, 600);
                 });
             });
-        });
+        }).modal("show");
     }
     function postPlayerHammerAttack(target, hit) {
-        $("#playerHammerModal").modal("hide");
-        $("#playerHammerTime1, #playerHammerTime2, #playerHammerTime3, #playerHammerTime4").css("background-color", "");
+        closeCanvasModal();
         try {
             stage.player.hammerAttack(target, hit);
         } catch (e) {
             checkEnemyHealth(e);
         }
         playTurns();
+    }
+    function closeCanvasModal() {
+        $("#canvasModal").modal("hide");
+        $("#canvasModal").on("hidden.bs.modal", function canvasModalHide(e) {
+            $("#canvasModal").off("hidden.bs.modal");
+            $("#canvasModalCanvas").removeLayers().clearCanvas();
+        });
     }
     function checkEnemyHealth(e) {
         if (e instanceof signals.EnemyNoHealth) {
