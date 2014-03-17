@@ -27,7 +27,7 @@ $(document).ready(function documentReady(e) {
             // add stage entity
             var img = $("<div/>").addClass("enemy").data("enemy", enemy);
             img.css({
-                "background-image": "url(" + enemy.image + ")",
+                "background-image": "url(res/img/" + enemy.image + ")",
                 "right": right + "%"
             });
             right -= 20;
@@ -131,13 +131,13 @@ $(document).ready(function documentReady(e) {
     function playerJumpAttack(target) {
         $("#canvasModalCanvas").drawImage({
             layer: true,
-            source: target.image,
+            source: "res/img/" + target.image,
             x: 279, y: 225,
             fromCenter: false
         }).drawImage({
             layer: true,
             name: "player",
-            source: "player_jump.png",
+            source: "res/img/player_jump.png",
             x: 149, y: 200,
             fromCenter: false
         });
@@ -216,13 +216,13 @@ $(document).ready(function documentReady(e) {
         }).drawImage({
             layer: true,
             name: "enemy",
-            source: target.image,
+            source: "res/img/" + target.image,
             x: 279, y: 150,
             fromCenter: false
         }).drawImage({
             layer: true,
             name: "player",
-            source: "player.png",
+            source: "res/img/player.png",
             x: 149, y: 125,
             fromCenter: false
         });
@@ -235,7 +235,7 @@ $(document).ready(function documentReady(e) {
                 $("#canvasModalCanvas").removeLayer("player").drawImage({
                     layer: true,
                     name: "player",
-                    source: "player_hammer_prep.png",
+                    source: "res/img/player_hammer_prep.png",
                     x: 149, y: 125,
                     fromCenter: false
                 }).drawLayers();
@@ -270,7 +270,7 @@ $(document).ready(function documentReady(e) {
                     $("#canvasModalCanvas").removeLayer("enemy").removeLayer("player").drawImage({
                         layer: true,
                         name: "player",
-                        source: "player_hammer_miss.png",
+                        source: "res/img/player_hammer_miss.png",
                         x: 179, y: 125,
                         fromCenter: false
                     }).drawLayers();
@@ -289,7 +289,7 @@ $(document).ready(function documentReady(e) {
                     $("#canvasModalCanvas").removeLayer("enemy").removeLayer("player").drawImage({
                         layer: true,
                         name: "player",
-                        source: "player_hammer_" + (hit ? "hit" : "miss") + ".png",
+                        source: "res/img/player_hammer_" + (hit ? "hit" : "miss") + ".png",
                         x: 179, y: 125,
                         fromCenter: false
                     }).drawLayers();

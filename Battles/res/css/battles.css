@@ -30,7 +30,7 @@
 }
 #battleStage {
     position: relative;
-    background-image: url(stage.jpg);
+    background-image: url(../img/stage.jpg);
     background-size: 100%;
 }
 #battlePlayer {
